@@ -1,36 +1,60 @@
 buildscript {
-    ext {
-        springBootVersion = '2.0.6.RELEASE'
-    }
     repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:2.0.6.RELEASE')
+// tag::build[]
+        classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
+// end::build[]
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+// tag::plugin[]
+apply plugin: 'com.palantir.docker'
+// end::plugin[]
 
-group = 'org.kts1021.docker'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+// This is used as the docker image prefix (org)
+group = 'springio'
+
+bootRun {
+    systemProperties System.properties
+}
+
+bootJar {
+    baseName = 'demo    '
+    version =  '0.1.0'
+}
+
+// tag::task[]
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+docker {
+    name "${project.group}/${bootJar.baseName}"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
+}
+// end::task[]
 
 repositories {
     mavenCentral()
 }
 
-task print() {
-    doLast {
-        println "github push complete"
-    }
-}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
-    implementation('org.springframework.boot:spring-boot-starter-webflux')
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation('io.projectreactor:reactor-test')
+    compile("org.springframework.boot:spring-boot-starter-webflux")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }
