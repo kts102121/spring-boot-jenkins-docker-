@@ -9,9 +9,7 @@ COPY ./nginx.conf /etc/nginx
 EXPOSE 80
 
 VOLUME /tmp
-ARG DEPENDENCY=build/dependency
-COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY ${DEPENDENCY}/META-INF /app/META-INF
-COPY ${DEPENDENCY}/BOOT-INF/classes /app
+ARG DEPENDENCY=build/libs
+COPY ${DEPENDENCY}/demo-0.1.0.jar app.jar
 
-ENTRYPOINT sh -c 'service nginx start && java -cp app:app/lib/* org.kts1021.docker.demo.DemoApplication'
+ENTRYPOINT sh -c 'service nginx start && java -jar app.jar'
