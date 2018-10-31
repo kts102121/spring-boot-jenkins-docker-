@@ -32,3 +32,6 @@
 config.rb
 user-data
 Vagrantfile
+
+### Environmental Variables ###
+env.list
