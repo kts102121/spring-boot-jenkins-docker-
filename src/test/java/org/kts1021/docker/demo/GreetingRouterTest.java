@@ -20,7 +20,6 @@ public class GreetingRouterTest {
                     .get().uri("/hello")
                     .accept(MediaType.TEXT_PLAIN)
                     .exchange()
-                .expectStatus().isOk()
-                .expectBody(String.class).isEqualTo("Hello World!");
+                .expectStatus().isOk();
     }
 }

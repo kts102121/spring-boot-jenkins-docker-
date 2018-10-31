@@ -25,4 +25,10 @@
 /nbdist/
 /.nb-gradle/
 
+### OS related ###
 .DS_Store
+
+### Vagrant ###
+config.rb
+user-data
+Vagrantfile
