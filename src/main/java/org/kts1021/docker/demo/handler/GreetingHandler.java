@@ -10,22 +10,11 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import java.net.InetSocketAddress;
-import java.util.Optional;
-
 @Component
 public class GreetingHandler {
     private static final Logger log = LoggerFactory.getLogger(GreetingHandler.class);
 
-    private final UserMapper userMapper;
-
-    public GreetingHandler(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
-
     public Mono<ServerResponse> hello(ServerRequest request) {
-        log.info("User: {}", userMapper.findByUsername("ksh10211").getUsername());
-
         return ServerResponse.ok().contentType(MediaType.TEXT_PLAIN).body(BodyInserters.fromObject(new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (System.currentTimeMillis())) + " / from: " + request.remoteAddress()));
     }
 }
