@@ -9,10 +9,7 @@ COPY ./nginx.conf /etc/nginx
 EXPOSE 80
 
 VOLUME /tmp
-
-RUN JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD} gradle build
-
-ARG DEPENDENCY=build/libs
-COPY ${DEPENDENCY}/demo-0.1.0.jar app.jar
+ARG JAR_FILE
+COPY ${JAR_FILE} app.jar
 
 ENTRYPOINT sh -c 'service nginx start && java -jar app.jar'
