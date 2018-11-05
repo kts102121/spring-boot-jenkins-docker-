@@ -31,6 +31,6 @@ public class GreetingRouterTest {
 
     @Test
     public void testConnection() {
-        Assert.notNull(userMapper.findByUsername("lolo"), "Is null?");
+        Assert.notNull(userMapper.findByUsername("ksh10211"), "Is null?");
     }
 }
