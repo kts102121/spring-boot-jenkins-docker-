@@ -7,6 +7,6 @@ import org.kts1021.docker.demo.domain.User;
 
 @Mapper
 public interface UserMapper {
-    @Select("SELECT * FROM users WHERE username = #{username}")
+    @Select("SELECT DISTINCT * FROM users WHERE username = #{username}")
     User findByUsername(@Param("username") String username);
 }
